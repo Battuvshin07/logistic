@@ -5,8 +5,11 @@ import { useLocale } from "./LocaleProvider";
 const defaultTheme: ConfigProviderProps["theme"] = {
   token: {
     borderRadius: 4,
+    colorPrimary: "#212e42",
+    fontFamily: "Inter, sans-serif",
+    colorLink: "#1890ff",
   },
-  algorithm: theme.darkAlgorithm,
+  algorithm: theme.defaultAlgorithm,
 };
 
 export default function DefaultConfigProvider({ children }: PropsWithChildren) {

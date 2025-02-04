@@ -10,6 +10,7 @@ export interface Login {
 }
 export interface Validate {
   required: Required;
+  email: string;
 }
 export interface Required {
   email: string;

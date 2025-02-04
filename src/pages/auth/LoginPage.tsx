@@ -19,6 +19,7 @@ export default function LoginPage() {
           name="email"
           rules={[
             { required: true, message: locale.login.validate.required.email },
+            { type: "email", message: locale.login.validate.email },
           ]}
         >
           <Input placeholder="example@mail.com" />
