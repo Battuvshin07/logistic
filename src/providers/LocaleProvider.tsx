@@ -5,14 +5,13 @@ import {
   useContext,
   useReducer,
 } from "react";
-import { Locale, LocaleSchema } from "../locale/type";
-import getLocale from "../locale";
+import getLocale, { Locale, LocaleLanguage } from "../locale";
 import { Locale as AntdLocale } from "antd/es/locale";
 
 interface LocaleContext {
-  locale: LocaleSchema;
+  locale: Locale;
   antdLocale: AntdLocale;
-  setLocale(locale: Locale): void;
+  setLocale(locale: LocaleLanguage): void;
 }
 const localeContext = createContext<LocaleContext>([] as any);
 
@@ -22,8 +21,8 @@ export function useLocale() {
 
 export default function LocaleProvider({ children }: PropsWithChildren) {
   const [[locale, antdLocale], setLocale] = useReducer<
-    Reducer<[LocaleSchema, AntdLocale], Locale>
-  >((_, locale) => getLocale(locale), getLocale(Locale.mn_MN));
+    Reducer<[Locale, AntdLocale], LocaleLanguage>
+  >((_, locale) => getLocale(locale), getLocale(LocaleLanguage.mn_MN));
   return (
     <localeContext.Provider value={{ locale, antdLocale, setLocale }}>
       {children}

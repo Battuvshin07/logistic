@@ -4,6 +4,7 @@ export type Login = {
   email: string;
   password: string;
 };
-export default function login(value: Login) {
+function login(value: Login) {
   return http.post<string>("/auth/login", value);
 }
+export default login;

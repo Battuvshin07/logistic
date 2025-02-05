@@ -1,47 +1,58 @@
-import { Button, Form, Input } from "antd";
 import { useLocale } from "../../providers/LocaleProvider";
 import { useRequest } from "ahooks";
 import { auth } from "../../api";
+import { ProForm, ProFormGroup, ProFormText } from "@ant-design/pro-components";
+import { Button } from "antd";
 
 export default function LoginPage() {
   const { locale } = useLocale();
-  const { run } = useRequest(auth.login, {
-    manual: true,
-    onSuccess(response) {
-      console.log(response);
-    },
-  });
+  const { runAsync } = useRequest(
+    (value) => auth.login(value).then(console.log),
+    {
+      manual: true,
+      onSuccess(response) {
+        console.log(response);
+      },
+    }
+  );
   return (
     <>
-      <Form title={locale.login.title} layout="vertical" onFinish={run}>
-        <Form.Item
-          label={locale.login.email}
-          name="email"
-          rules={[
-            { required: true, message: locale.login.validate.required.email },
-            { type: "email", message: locale.login.validate.email },
-          ]}
-        >
-          <Input placeholder="example@mail.com" />
-        </Form.Item>
-        <Form.Item
-          label={locale.login.password}
-          name="password"
-          rules={[
-            {
-              required: true,
-              message: locale.login.validate.required.password,
-            },
-          ]}
-        >
-          <Input.Password />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            {locale.login.submit}
-          </Button>
-        </Form.Item>
-      </Form>
+      <ProForm
+        layout="vertical"
+        onFinish={runAsync}
+        submitter={{
+          render({ submit }) {
+            return (
+              <Button type="primary" htmlType="submit" onClick={submit}>
+                {locale.login.submit}
+              </Button>
+            );
+          },
+        }}
+      >
+        <ProFormGroup title={locale.login.title}>
+          <ProFormText
+            rules={[
+              { required: true, message: locale.login.validate.required.email },
+              { type: "email", message: locale.login.validate.email },
+            ]}
+            width="md"
+            name="email"
+            label={locale.login.email}
+          />
+          <ProFormText
+            width="md"
+            name="password"
+            label={locale.login.password}
+            rules={[
+              {
+                required: true,
+                message: locale.login.validate.required.password,
+              },
+            ]}
+          />
+        </ProFormGroup>
+      </ProForm>
     </>
   );
 }
