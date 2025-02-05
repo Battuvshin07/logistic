@@ -28,7 +28,7 @@ export default function SignupPage() {
           },
         }}
       >
-        <ProFormGroup title={locale.signup.title}>
+        <ProFormGroup title={locale.signup.title} direction="vertical">
           <ProFormText
             name="email"
             label={locale.signup.email}
@@ -61,7 +61,7 @@ export default function SignupPage() {
               },
             ]}
           />
-          <ProFormText
+          <ProFormText.Password
             name="password"
             label={locale.signup.password}
             rules={[
@@ -70,10 +70,10 @@ export default function SignupPage() {
                 message: locale.signup.validate.required.password,
               },
               { min: 8, message: locale.signup.validate.minimum.password },
-              {
-                pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[\W_])$/,
-                message: locale.signup.validate.password,
-              },
+              // {
+              //   pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
+              //   message: locale.signup.validate.password,
+              // },
             ]}
           />
         </ProFormGroup>

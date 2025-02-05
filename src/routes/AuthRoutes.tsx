@@ -8,7 +8,7 @@ const SignupPage = lazy(() => import("../pages/auth/SignupPage"));
 export default function createAuthRoutes() {
   return (
     <Route path="auth" element={<AuthLayout />}>
-      <Route index path="signup" element={<SignupPage />} />
+      <Route path="signup" element={<SignupPage />} />
       <Route path="login" element={<LoginPage />} />
     </Route>
   );
