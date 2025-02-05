@@ -1,11 +1,9 @@
-import { useLocale } from "@/providers/locale";
 import { useRequest } from "ahooks";
 import { auth } from "@/api";
 import { ProForm, ProFormGroup, ProFormText } from "@ant-design/pro-components";
 import { Button } from "antd";
 
 export default function LoginPage() {
-  const { locale } = useLocale();
   const { runAsync } = useRequest(
     (value) => auth.login(value).then(console.log),
     {
@@ -24,30 +22,26 @@ export default function LoginPage() {
           render({ submit }) {
             return (
               <Button type="primary" htmlType="submit" onClick={submit}>
-                {locale.login.submit}
+                Нэвтрэх
               </Button>
             );
           },
         }}
       >
-        <ProFormGroup title={locale.login.title}>
+        <ProFormGroup title="Нэвтрэх">
           <ProFormText
-            rules={[
-              { required: true, message: locale.login.validate.required.email },
-              { type: "email", message: locale.login.validate.email },
-            ]}
+            rules={[{ required: true }, { type: "email" }]}
             width="md"
             name="email"
-            label={locale.login.email}
+            label={"И-мэйл"}
           />
           <ProFormText
             width="md"
             name="password"
-            label={locale.login.password}
+            label={"Нууц үг"}
             rules={[
               {
                 required: true,
-                message: locale.login.validate.required.password,
               },
             ]}
           />

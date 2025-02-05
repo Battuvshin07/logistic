@@ -1,6 +1,6 @@
 import { ConfigProvider, ConfigProviderProps, theme } from "antd";
 import { PropsWithChildren } from "react";
-import { useLocale } from "../locale";
+import mn_MN from "antd/lib/locale/mn_MN";
 
 const defaultTheme: ConfigProviderProps["theme"] = {
   token: {
@@ -13,9 +13,8 @@ const defaultTheme: ConfigProviderProps["theme"] = {
 };
 
 export default function DefaultConfigProvider({ children }: PropsWithChildren) {
-  const { antdLocale } = useLocale();
   return (
-    <ConfigProvider theme={defaultTheme} locale={antdLocale}>
+    <ConfigProvider theme={defaultTheme} locale={mn_MN}>
       {children}
     </ConfigProvider>
   );
