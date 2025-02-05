@@ -1,4 +1,4 @@
-import { image } from "../resources";
+import { image } from "@/resources";
 import { Outlet } from "react-router";
 
 export default function AuthLayout() {

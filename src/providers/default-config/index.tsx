@@ -1,6 +1,6 @@
 import { ConfigProvider, ConfigProviderProps, theme } from "antd";
 import { PropsWithChildren } from "react";
-import { useLocale } from "./LocaleProvider";
+import { useLocale } from "../locale";
 
 const defaultTheme: ConfigProviderProps["theme"] = {
   token: {

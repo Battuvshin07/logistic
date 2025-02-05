@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router";
-import createAuthRoutes from "./AuthRoutes";
+import createAuthRoutes from "./auth-routes";
 
 export default function MainRoutes() {
   return (

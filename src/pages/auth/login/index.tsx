@@ -1,6 +1,6 @@
-import { useLocale } from "../../providers/LocaleProvider";
+import { useLocale } from "@/providers/locale";
 import { useRequest } from "ahooks";
-import { auth } from "../../api";
+import { auth } from "@/api";
 import { ProForm, ProFormGroup, ProFormText } from "@ant-design/pro-components";
 import { Button } from "antd";
 

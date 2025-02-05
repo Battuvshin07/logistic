@@ -1,7 +1,7 @@
 import { ProForm, ProFormGroup, ProFormText } from "@ant-design/pro-components";
-import { useLocale } from "../../providers/LocaleProvider";
+import { useLocale } from "@/providers/locale";
 import { Button } from "antd";
-import { auth } from "../../api";
+import { auth } from "@/api";
 import { useRequest } from "ahooks";
 
 export default function SignupPage() {

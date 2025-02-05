@@ -5,7 +5,7 @@ import {
   useContext,
   useReducer,
 } from "react";
-import getLocale, { Locale, LocaleLanguage } from "../locale";
+import getLocale, { Locale, LocaleLanguage } from "@/locale";
 import { Locale as AntdLocale } from "antd/es/locale";
 
 interface LocaleContext {

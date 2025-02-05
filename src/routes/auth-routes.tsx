@@ -1,9 +1,9 @@
 import { lazy } from "react";
 import { Route } from "react-router";
 
-const AuthLayout = lazy(() => import("../layouts/AuthLayout"));
-const LoginPage = lazy(() => import("../pages/auth/LoginPage"));
-const SignupPage = lazy(() => import("../pages/auth/SignupPage"));
+const AuthLayout = lazy(() => import("@/layouts/auth"));
+const LoginPage = lazy(() => import("@/pages/auth/login"));
+const SignupPage = lazy(() => import("@/pages/auth/signup"));
 
 export default function createAuthRoutes() {
   return (
