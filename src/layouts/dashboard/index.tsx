@@ -8,20 +8,20 @@ export default function DashboardLayout() {
     <ProLayout
       style={{ borderRadius: "100px" }}
       fixSiderbar={true}
+      siderMenuType="sub"
       siderWidth={300}
       location={{ pathname: location.pathname }}
       token={{
-        sider: {
-          colorTextMenuTitle: "#fff",
-          colorMenuBackground: "#212e42",
-          colorBgMenuItemSelected: "#202836",
-          colorBgMenuItemHover: "#202836",
-          colorTextMenu: "#fff",
+        header: {
+          colorBgHeader: "#0077F4",
+          colorTextMenu: "#eef",
+          colorTextMenuActive: "#fff",
           colorTextMenuSelected: "#fff",
-          colorTextMenuItemHover: "#fff",
-          menuHeight: 55,
+          colorTextMenuSecondary: "#eef",
+          colorHeaderTitle: "#eef",
         },
       }}
+      layout="top"
       menu={{
         request: async () => [
           {

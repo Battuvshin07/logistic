@@ -5,7 +5,7 @@ import mn_MN from "antd/lib/locale/mn_MN";
 const defaultTheme: ConfigProviderProps["theme"] = {
   token: {
     borderRadius: 4,
-    colorPrimary: "#212e42",
+    colorPrimary: "#0077F4",
     fontFamily: "Inter, sans-serif",
     colorLink: "#1890ff",
   },
