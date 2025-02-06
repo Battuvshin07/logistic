@@ -1,36 +1,22 @@
-export const CAPACITY_SAMPLES = Array(100).fill({
-  arrivalDate: "2023-01-01",
-  arrivalBorder: "MN",
-  import: true,
-  containerNumber: 21,
-  capacity: 1000,
-  brokerName: "Галбадрал",
-  load: true,
-  sell: true,
-  price: 13000,
-  brokerCode: 52525,
-  blockNumber: 14,
-  unloadedSite: true,
-  arrivedSite: true,
-  unloaded: true,
-  released: false,
-  loaded: false,
+export const SAMPLE_REMAINING = Array(100).fill({
+  arrivalDate: "2023-01-01", // Дөхөлт огноо
+  borderEntry: "MN", // Орох хил
+  arrivalDeparture: "Arrival", // Ирэх\Явах
+  containerNumber: 21, // Чингэлэг дугаар
+  capacity: 1000, // Даац
+  brokerName: "Cola", // Зуучийн нэр
+  emptyLoaded: "Loaded", // Хоосон\Ачаатай
+  forSale: true, // Зарах эсэх
+  salePrice: 13000, // Зарах үнэ
 });
-export const CAPACITY_COLUMNS = [
-  { title: "Дөхөлт огноо", dataIndex: "arrivalDate" },
-  { title: "Орох хил", dataIndex: "arrivalBorder" },
-  { title: "Ирэх/Явах", dataIndex: "import" },
-  { title: "Чингэлэгийн дугаар", dataIndex: "containerNumber" },
-  { title: "Багтаамж", dataIndex: "capacity" },
-  { title: "Зуучийн нэр", dataIndex: "brokerName" },
-  { title: "Ачилт хийсэн", dataIndex: "load" },
-  { title: "Борлуулалт", dataIndex: "sell" },
-  { title: "Үнэ", dataIndex: "price" },
-  { title: "Зуучийн код", dataIndex: "brokerCode" },
-  { title: "Блокийн дугаар", dataIndex: "blockNumber" },
-  { title: "Талбайд задарсан", dataIndex: "unloadedSite" },
-  { title: "Талбайд ирсэн", dataIndex: "arrivedSite" },
-  { title: "Задарсан", dataIndex: "unloaded" },
-  { title: "Суларсан", dataIndex: "released" },
-  { title: "Ачаалласан", dataIndex: "loaded" },
+export const REMAINING_COLUMNS = [
+  { title: "Дөхөлт огноо", dataIndex: "arrivalDate" }, // Дөхөлт огноо
+  { title: "Орох хил", dataIndex: "borderEntry" }, // Орох хил
+  { title: "Ирэх/Явах", dataIndex: "arrivalDeparture" }, // Ирэх\Явах
+  { title: "Чингэлэг дугаар", dataIndex: "containerNumber" }, // Чингэлэг дугаар
+  { title: "Даац", dataIndex: "capacity" }, // Даац
+  { title: "Зуучийн нэр", dataIndex: "brokerName" }, // Зуучийн нэр
+  { title: "Хоосон/Ачаатай", dataIndex: "emptyLoaded" }, // Хоосон\Ачаатай
+  { title: "Зарах эсэх", dataIndex: "forSale" }, // Зарах эсэх
+  { title: "Зарах үнэ", dataIndex: "salePrice" }, // Зарах үнэ
 ];

@@ -1,7 +1,7 @@
 import { ProTable } from "@ant-design/pro-components";
 import { Segmented } from "antd";
 import { useState } from "react";
-import { CAPACITY_COLUMNS, CAPACITY_SAMPLES } from "./sample";
+import { SAMPLE_REMAINING, REMAINING_COLUMNS } from "./sample";
 
 const SEGMENT_OPTIONS = [
   {
@@ -28,8 +28,8 @@ export default function SiteRegistrationPage() {
         style={{ marginBottom: "32px" }}
       />
       <ProTable
-        dataSource={CAPACITY_SAMPLES}
-        columns={CAPACITY_COLUMNS}
+        dataSource={REMAINING_COLUMNS}
+        columns={SAMPLE_REMAINING}
         options={false}
         search={false}
       />
