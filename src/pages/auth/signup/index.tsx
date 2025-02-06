@@ -1,16 +1,12 @@
 import { ProForm, ProFormGroup, ProFormText } from "@ant-design/pro-components";
-import { useLocale } from "@/providers/locale";
 import { Button } from "antd";
 import { auth } from "@/api";
 import { useRequest } from "ahooks";
 
 export default function SignupPage() {
-  const { locale } = useLocale();
   const { runAsync } = useRequest(
     (value) => auth.signup(value).then(console.log),
-    {
-      manual: true,
-    }
+    { manual: true }
   );
 
   return (
@@ -22,59 +18,37 @@ export default function SignupPage() {
           render({ submit }) {
             return (
               <Button type="primary" htmlType="submit" onClick={submit}>
-                {locale.signup.submit}
+                Бүртгүүлэх
               </Button>
             );
           },
         }}
       >
-        <ProFormGroup title={locale.signup.title} direction="vertical">
+        <ProFormGroup title="Бүртгүүлэх" direction="vertical">
           <ProFormText
             name="email"
-            label={locale.signup.email}
-            rules={[
-              {
-                required: true,
-                message: locale.signup.validate.required.email,
-              },
-              { type: "email", message: locale.signup.validate.email },
-            ]}
+            label="И-мэйл"
+            rules={[{ required: true }, { type: "email" }]}
           />
           <ProFormText
             name="fullName"
-            label={locale.signup.fullName}
-            rules={[
-              {
-                required: true,
-                message: locale.signup.validate.required.fullName,
-              },
-              { min: 4, message: locale.signup.validate.minimum.fullName },
-            ]}
+            label="Овог нэр"
+            rules={[{ required: true }, { min: 4 }]}
           />
           <ProFormText
             name="phoneNumber"
-            label={locale.signup.phoneNumber}
+            label="Утасны дугаар"
             rules={[
               {
                 pattern: /^\+?[1-9]\d{1,14}$/,
-                message: locale.signup.validate.phoneNumber,
+                message: "Утасны дугаар буруу байна",
               },
             ]}
           />
           <ProFormText.Password
             name="password"
-            label={locale.signup.password}
-            rules={[
-              {
-                required: true,
-                message: locale.signup.validate.required.password,
-              },
-              { min: 8, message: locale.signup.validate.minimum.password },
-              // {
-              //   pattern: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/,
-              //   message: locale.signup.validate.password,
-              // },
-            ]}
+            label="Нууц үг"
+            rules={[{ required: true }, { min: 8 }]}
           />
         </ProFormGroup>
       </ProForm>
