@@ -1,3 +1,5 @@
+import { RegisteredByColumn, RoleColumn } from "./enums";
+
 export const SAMPLE_USERS = [
   {
     email: "admin@mail.com",
@@ -17,26 +19,41 @@ export const SAMPLE_USERS = [
 export const SAMPLE_ADMIN_TABLE = [
   {
     id: 1,
-    name: "Баатар Цогт",
-    role: "Тээврийн менежер",
+    surname: "Баатар",
+    name: "Цогт",
+    role: RoleColumn.VehicleManager,
     registrationNumber: "УО12345678",
     age: 21,
-    gender: "Эр",
+    isMale: true,
     phoneNumber: "12345678",
     email: "baatar.tsogt@mail.com",
     registeredDate: "2023/03/13",
-    registeredEmployee: "Админ",
+    registeredBy: RegisteredByColumn.Admin,
   },
   {
     id: 3,
-    name: "Цогт Баатар",
-    role: "Тээврийн менежер",
+    surname: "Сайхан",
+    name: "Цогт",
+    role: RoleColumn.Cashier,
     registrationNumber: "УО12345678",
     age: 21,
-    gender: "Эр",
+    isMale: false,
     phoneNumber: "12345678",
-    email: "baatar.tsogt@mail.com",
+    email: "saikhan.tsogt@mail.com",
     registeredDate: "2023/03/13",
-    registeredEmployee: "Админ",
+    registeredBy: RegisteredByColumn.Admin,
+  },
+  {
+    id: 2,
+    surname: "Амар",
+    name: "Баяр",
+    role: RoleColumn.Finance,
+    registrationNumber: "УО12345678",
+    age: 21,
+    isMale: false,
+    phoneNumber: "12345678",
+    email: "amar@mail.com",
+    registeredDate: "2023/03/13",
+    registeredBy: RegisteredByColumn.Admin,
   },
 ];
