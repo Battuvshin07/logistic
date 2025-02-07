@@ -1,5 +1,5 @@
-import { BaseResponse, http } from "..";
-import SAMPLE_USERS from "../sample_users";
+import { http } from "..";
+import { UserResponseError } from "../errors";
 
 export type User = {
   role: "admin" | "finance";
@@ -8,12 +8,18 @@ export type User = {
   phoneNumber?: string;
   token: string;
 };
-export async function info(token: string) {
+export async function info() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error(UserResponseError.UserNotFound);
+  }
+
   if (import.meta.env.VITE_NO_BACKEND) {
+    const { SAMPLE_USERS } = await import("../sample_database");
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const sample = SAMPLE_USERS.find((s) => s.token === token);
-    if (sample) return { ok: true, data: sample } as BaseResponse<User>;
-    return { ok: false, error: "USER_NOT_FOUND" } as BaseResponse<User>;
+    if (sample) return sample as User;
+    throw new Error(UserResponseError.UserNotFound);
   }
   return await http.get<User>("/user/info", token);
 }

@@ -1,6 +1,5 @@
 import * as http from "../http";
-import SAMPLE_USERS from "../sample_users";
-import { BaseResponse } from "../type";
+import { LoginResponseError } from "../errors";
 
 export type Login = {
   email: string;
@@ -8,11 +7,19 @@ export type Login = {
 };
 async function login(value: Login) {
   if (import.meta.env.VITE_NO_BACKEND) {
+    const { SAMPLE_USERS } = await import("../sample_database");
     await new Promise((resolve) => setTimeout(resolve, 1000));
     const sample = SAMPLE_USERS.find((s) => s.email === value.email);
-    if (sample) return { ok: true, data: sample.token } as BaseResponse<string>;
-    return { ok: false, error: "USER_NOT_FOUND" } as BaseResponse<string>;
+    if (sample) {
+      if (sample.password !== value.password) {
+        throw new Error(LoginResponseError.NotFound);
+      }
+      localStorage.setItem("token", sample.token);
+      return;
+    }
+    throw new Error(LoginResponseError.NotFound);
   }
-  return await http.post<string>("/auth/login", value);
+  const token = await http.post<string>("/auth/login", value);
+  localStorage.setItem("token", token);
 }
 export default login;

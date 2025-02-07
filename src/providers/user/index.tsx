@@ -4,7 +4,6 @@ import { createContext, PropsWithChildren, useContext } from "react";
 import { user as userApi } from "@/api";
 
 export type UserContext = {
-  setToken: (token: string | null) => void;
   user: User | null;
   loading: boolean;
 };
@@ -14,31 +13,14 @@ export function useUser() {
   return useContext(userContext);
 }
 export default function UserProvider({ children }: PropsWithChildren) {
-  const {
-    data: user,
-    loading,
-    run: setToken,
-  } = useRequest(
-    async (token: string | null) => {
-      if (!token) {
-        localStorage.removeItem("token");
-        return;
-      }
-      const res = await userApi.info(token);
-      if (!res.ok) throw res.error;
-      localStorage.setItem("token", token);
-      return res.data;
+  const { data: user, loading } = useRequest(userApi.info, {
+    onError: () => {
+      localStorage.removeItem("token");
     },
-    {
-      defaultParams: [localStorage.getItem("token")],
-      onError: () => {
-        localStorage.removeItem("token");
-      },
-    }
-  );
+  });
 
   return (
-    <userContext.Provider value={{ setToken, user: user || null, loading }}>
+    <userContext.Provider value={{ user: user || null, loading }}>
       {children}
     </userContext.Provider>
   );

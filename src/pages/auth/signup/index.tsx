@@ -1,18 +1,36 @@
 import { ProForm, ProFormGroup, ProFormText } from "@ant-design/pro-components";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { auth } from "@/api";
 import { useRequest } from "ahooks";
+import { useNavigate } from "react-router";
+import { SignupResponseError } from "@/api/errors";
 
 export default function SignupPage() {
-  const { runAsync } = useRequest(
-    (value) => auth.signup(value).then(console.log),
-    { manual: true }
+  const navigate = useNavigate();
+  const { runAsync, loading } = useRequest(
+    async (value) => {
+      await auth.signup(value);
+      navigate("/dashboard");
+    },
+    {
+      manual: true,
+      onError(e) {
+        switch (e.message) {
+          case SignupResponseError.AlreadyExist:
+            message.error("И-Мэйл аль хэдийн бүртгүүлсэн байна");
+            break;
+          default:
+            message.error(`Unknown error ${e.message}`);
+        }
+      },
+    }
   );
 
   return (
     <>
       <ProForm
         layout="vertical"
+        disabled={loading}
         onFinish={runAsync}
         submitter={{
           render({ submit }) {

@@ -1,24 +1,28 @@
 import { useRequest } from "ahooks";
 import { auth } from "@/api";
 import { ProForm, ProFormGroup, ProFormText } from "@ant-design/pro-components";
-import { Button } from "antd";
-import { useUser } from "@/providers/user";
+import { Button, message } from "antd";
 import { useNavigate } from "react-router";
+import { LoginResponseError } from "@/api/errors";
 
 export default function LoginPage() {
-  const { setToken } = useUser();
   const navigate = useNavigate();
   const { runAsync, loading } = useRequest(
-    async (value: auth.Login) => {
-      const res = await auth.login(value);
-      if (!res.ok) throw res.error;
-      setToken(res.data);
+    async (value) => {
+      await auth.login(value);
       navigate("/dashboard");
     },
     {
       manual: true,
       onError: (e) => {
-        console.log(e);
+        switch (e.message) {
+          case LoginResponseError.NotFound:
+            message.error("И-мэйл эсвэл нууц үг буруу байна");
+            break;
+          default:
+            message.error(`Unknown error ${e.message}`);
+            console.error(e);
+        }
       },
     }
   );
@@ -28,7 +32,7 @@ export default function LoginPage() {
       <ProForm
         layout="vertical"
         onFinish={runAsync}
-        loading={loading}
+        disabled={loading}
         submitter={{
           render({ submit }) {
             return (

@@ -1,5 +1,5 @@
 import * as http from "../http";
-import SAMPLE_USERS from "../sample_users";
+import { SignupResponseError } from "../errors";
 
 export type Signup = {
   email: string;
@@ -9,16 +9,17 @@ export type Signup = {
 };
 async function signup(value: Signup) {
   if (import.meta.env.VITE_NO_BACKEND) {
+    const { SAMPLE_USERS } = await import("../sample_database");
     await new Promise((resolve) => setTimeout(resolve, 1000));
     if (SAMPLE_USERS.find((s) => s.email === value.email)) {
-      return { ok: false, error: "USER_ALREADY_EXIST" };
+      throw new Error(SignupResponseError.AlreadyExist);
     }
-    SAMPLE_USERS.push({
-      ...value,
-      role: "finance",
-      token: `generatedToken-${value.email}`,
-    });
+    const token = `generatedToken-${value.email}`;
+    SAMPLE_USERS.push({ ...value, role: "finance", token });
+    localStorage.setItem("token", token);
+    return;
   }
-  return await http.post<string>("/auth/signup", value);
+  const token = await http.post<string>("/auth/signup", value);
+  localStorage.setItem("token", token);
 }
 export default signup;

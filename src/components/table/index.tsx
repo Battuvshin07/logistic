@@ -4,15 +4,18 @@ import { IoMdAdd } from "react-icons/io";
 import { TbReload } from "react-icons/tb";
 
 type Props<T> = {
-  data: T[];
-  columns: ProColumns<T, "text">[];
+  data?: T[];
+  loading?: boolean;
+  columns?: ProColumns<T, "text">[];
 };
 export default function Table<T extends Record<string, any>>({
-  data,
-  columns,
+  data = [],
+  loading,
+  columns = [],
 }: Props<T>) {
   return (
     <ProTable<T>
+      loading={loading}
       rowKey="id"
       dataSource={data}
       columns={columns}
@@ -20,7 +23,7 @@ export default function Table<T extends Record<string, any>>({
       options={false}
       headerTitle={
         <div className="flex gap-8 items-center">
-          <p>Нийт: ({data.length})</p>
+          <p>Нийт: ({data?.length})</p>
           <DatePicker.RangePicker />
         </div>
       }

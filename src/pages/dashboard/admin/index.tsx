@@ -1,20 +1,8 @@
+import { admin } from "@/api";
 import Table from "@/components/table";
+import { useRequest } from "ahooks";
 
-const SAMPLE_TABLE = Array(100)
-  .fill(0)
-  .map((_, index) => ({
-    id: index + 1,
-    name: "Баатар Цогт",
-    role: "Тээврийн менежер",
-    registrationNumber: "УО12345678",
-    age: 21,
-    gender: "Эр",
-    phoneNumber: "12345678",
-    email: "baatar.tsogt@mail.com",
-    registeredDate: "2023/03/13",
-    registeredEmployee: "Админ",
-  }));
-const SAMPLE_COLUMN = [
+const COLUMNS = [
   {
     title: "Нэр",
     dataIndex: "name",
@@ -54,5 +42,9 @@ const SAMPLE_COLUMN = [
 ];
 
 export default function AdminPage() {
-  return <Table data={SAMPLE_TABLE} columns={SAMPLE_COLUMN} />;
+  const { data, loading } = useRequest(async () => {
+    return await admin.tables();
+  });
+
+  return <Table data={data} columns={COLUMNS} loading={loading} />;
 }
