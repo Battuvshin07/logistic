@@ -1,19 +1,20 @@
-import { ProColumns, ProTable } from "@ant-design/pro-components";
-import { DatePicker } from "antd";
-import Search from "antd/lib/input/Search";
+import Table from "@/components/table";
 
-const SAMPLE_TABLE = Array(100).fill({
-  name: "Баатар Цогт",
-  role: "Тээврийн менежер",
-  registrationNumber: "УО12345678",
-  age: 21,
-  gender: "Эр",
-  phoneNumber: "12345678",
-  email: "baatar.tsogt@mail.com",
-  registeredDate: "2023/03/13",
-  registeredEmployee: "Админ",
-});
-const SAMPLE_COLUMN: ProColumns<(typeof SAMPLE_TABLE)[0]>[] = [
+const SAMPLE_TABLE = Array(100)
+  .fill(0)
+  .map((_, index) => ({
+    id: index + 1,
+    name: "Баатар Цогт",
+    role: "Тээврийн менежер",
+    registrationNumber: "УО12345678",
+    age: 21,
+    gender: "Эр",
+    phoneNumber: "12345678",
+    email: "baatar.tsogt@mail.com",
+    registeredDate: "2023/03/13",
+    registeredEmployee: "Админ",
+  }));
+const SAMPLE_COLUMN = [
   {
     title: "Нэр",
     dataIndex: "name",
@@ -53,24 +54,5 @@ const SAMPLE_COLUMN: ProColumns<(typeof SAMPLE_TABLE)[0]>[] = [
 ];
 
 export default function AdminPage() {
-  return (
-    <ProTable
-      rowKey="email"
-      dataSource={SAMPLE_TABLE}
-      columns={SAMPLE_COLUMN}
-      search={false}
-      options={false}
-      headerTitle={
-        <div className="flex gap-8 items-center">
-          <p>Нийт: {SAMPLE_TABLE.length}</p>
-          <DatePicker.RangePicker />
-        </div>
-      }
-      toolBarRender={() => [
-        <div className="flex gap-8">
-          <Search placeholder="Хайх" />
-        </div>,
-      ]}
-    />
-  );
+  return <Table data={SAMPLE_TABLE} columns={SAMPLE_COLUMN} />;
 }

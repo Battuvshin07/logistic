@@ -1,14 +1,17 @@
-export const SAMPLE_REMAINING = Array(100).fill({
-  arrivalDate: "2023-01-01", // Дөхөлт огноо
-  borderEntry: "MN", // Орох хил
-  arrivalDeparture: "Arrival", // Ирэх\Явах
-  containerNumber: 21, // Чингэлэг дугаар
-  capacity: 1000, // Даац
-  brokerName: "Cola", // Зуучийн нэр
-  emptyLoaded: "Loaded", // Хоосон\Ачаатай
-  forSale: true, // Зарах эсэх
-  salePrice: 13000, // Зарах үнэ
-});
+export const SAMPLE_REMAINING = Array(100)
+  .fill(0)
+  .map((_, index) => ({
+    id: index + 1,
+    arrivalDate: "2023-01-01", // Дөхөлт огноо
+    borderEntry: "MN", // Орох хил
+    arrivalDeparture: "Arrival", // Ирэх\Явах
+    containerNumber: 21, // Чингэлэг дугаар
+    capacity: 1000, // Даац
+    brokerName: "Cola", // Зуучийн нэр
+    emptyLoaded: "Loaded", // Хоосон\Ачаатай
+    forSale: true, // Зарах эсэх
+    salePrice: 13000, // Зарах үнэ
+  }));
 export const REMAINING_COLUMNS = [
   { title: "Дөхөлт огноо", dataIndex: "arrivalDate" }, // Дөхөлт огноо
   { title: "Орох хил", dataIndex: "borderEntry" }, // Орох хил

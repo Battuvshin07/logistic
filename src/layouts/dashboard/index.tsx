@@ -1,6 +1,6 @@
 import { useUser } from "@/providers/user";
 import { PageLoading, ProLayout } from "@ant-design/pro-components";
-import { Navigate, Outlet, useLocation } from "react-router";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
 
 const ADMIN_ROUTES = [
   {
@@ -22,8 +22,13 @@ const FINANCE_ROUTES = [
     path: "/dashboard/report",
   },
 ];
+const ROUTES = {
+  admin: ADMIN_ROUTES,
+  finance: FINANCE_ROUTES,
+};
 export default function DashboardLayout() {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user, loading } = useUser();
 
   if (loading) {
@@ -32,11 +37,13 @@ export default function DashboardLayout() {
   if (!user) {
     return <Navigate to="/auth/signup" />;
   }
+  const route = ROUTES[user.role];
+  if (!route) throw new Error(`Route not found for role ${user.role}`);
+
   return (
     <ProLayout
       style={{ borderRadius: "100px" }}
       fixSiderbar={true}
-      siderMenuType="sub"
       siderWidth={300}
       location={{ pathname: location.pathname }}
       token={{
@@ -49,18 +56,11 @@ export default function DashboardLayout() {
           colorHeaderTitle: "#eef",
         },
       }}
+      fixedHeader
       layout="top"
       menu={{
-        request: async () => {
-          switch (user!.role) {
-            case "admin":
-              return ADMIN_ROUTES;
-            case "finance":
-              return FINANCE_ROUTES;
-            default:
-              throw new Error(`Unexpected role ${user!.role}`);
-          }
-        },
+        type: "sub",
+        request: async () => route,
       }}
     >
       <Outlet />

@@ -28,8 +28,9 @@ export default function SiteRegistrationPage() {
         style={{ marginBottom: "32px" }}
       />
       <ProTable
-        dataSource={REMAINING_COLUMNS}
-        columns={SAMPLE_REMAINING}
+        rowKey="id"
+        dataSource={SAMPLE_REMAINING}
+        columns={REMAINING_COLUMNS}
         options={false}
         search={false}
       />
