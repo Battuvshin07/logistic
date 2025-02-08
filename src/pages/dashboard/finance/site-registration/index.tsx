@@ -18,7 +18,7 @@ const SEGMENT_OPTIONS = [
   },
 ];
 export default function SiteRegistrationPage() {
-  const [segment, setSegment] = useState(SEGMENT_OPTIONS[0].value);
+  const [_, setSegment] = useState(SEGMENT_OPTIONS[0].value);
 
   return (
     <>

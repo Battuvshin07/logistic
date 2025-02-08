@@ -1,6 +1,12 @@
 import { admin, enums } from "@/api";
-import Table from "@/components/table";
-import { ProColumnType } from "@ant-design/pro-components";
+import Table, { FormProp } from "@/components/table";
+import {
+  ProColumnType,
+  ProFormDatePicker,
+  ProFormDigit,
+  ProFormSelect,
+  ProFormText,
+} from "@ant-design/pro-components";
 import { useRequest } from "ahooks";
 import { Tag } from "antd";
 
@@ -85,8 +91,99 @@ const COLUMNS: ProColumnType<any>[] = [
   },
 ];
 
+function formText(name: string, label?: string, rules: any[] = []) {
+  return (value: string | null) => (
+    <ProFormText
+      name={name}
+      label={label}
+      initialValue={value}
+      placeholder={label}
+      rules={[{ required: true, message: "Заавал бөглөнө үү" }, ...rules]}
+    />
+  );
+}
+function formSelect(
+  name: string,
+  options: { value: any; label: string }[],
+  fieldProps: any,
+  label: string,
+  rules: any[] = []
+) {
+  return (value: any) => (
+    <ProFormSelect
+      name={name}
+      label={label}
+      options={options}
+      fieldProps={fieldProps}
+      placeholder={label}
+      initialValue={value}
+      rules={[{ required: true, message: "Заавал сонгоно уу" }, ...rules]}
+    />
+  );
+}
+const FORM_ELEMENTS: FormProp<Awaited<ReturnType<typeof admin.tables>>[0]> = {
+  email: formText("email", "И-мэйл", [{ type: "email" }]),
+  role: formSelect(
+    "role",
+    Object.entries(ROLE_TAG_PROPS).map(([value, { text }]) => ({
+      label: text,
+      value,
+    })),
+    {
+      optionItemRender: (item: any) => (
+        <Tag color={ROLE_TAG_PROPS[item.value].color}>{item.label}</Tag>
+      ),
+    },
+    "Үүрэг"
+  ),
+  name: formText("name", "Нэр"),
+  surname: formText("surname", "Овог"),
+  phoneNumber: formText("phoneNumber", "Утасны дугаар"),
+  isMale: formSelect(
+    "isMale",
+    [
+      { value: true, label: "Эр" },
+      { value: false, label: "Эм" },
+    ],
+    {},
+    "Хүйс"
+  ),
+  age: (value) => (
+    <ProFormDigit
+      name="age"
+      placeholder="Нас"
+      initialValue={value}
+      rules={[{ required: true, message: "Заавар бөглөнө үү" }]}
+    />
+  ),
+  registeredBy: formSelect(
+    "registeredBy",
+    Object.entries(REGISTER_BY_PROPS).map(([value, text]) => ({
+      value,
+      label: text,
+    })),
+    {},
+    "Бүртгэсэн ажилтан"
+  ),
+  registeredDate: (value) => (
+    <ProFormDatePicker
+      name="registeredDate"
+      label="Бүртгэсэн огноо"
+      initialValue={value}
+      rules={[{ required: true, message: "Заавал бөглөнө үү" }]}
+    ></ProFormDatePicker>
+  ),
+};
 export default function AdminPage() {
-  const { data, loading } = useRequest(admin.tables);
+  const { data, loading, refresh } = useRequest(admin.tables);
 
-  return <Table data={data} columns={COLUMNS} loading={loading} />;
+  return (
+    <Table
+      data={data}
+      columns={COLUMNS}
+      loading={loading}
+      formElements={FORM_ELEMENTS}
+      onReload={refresh}
+    />
+  );
 }

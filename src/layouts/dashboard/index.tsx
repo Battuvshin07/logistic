@@ -1,6 +1,6 @@
 import { useUser } from "@/providers/user";
 import { PageLoading, ProLayout } from "@ant-design/pro-components";
-import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
+import { Navigate, Outlet, useLocation } from "react-router";
 
 const ADMIN_ROUTES = [
   {
@@ -28,7 +28,6 @@ const ROUTES = {
 };
 export default function DashboardLayout() {
   const location = useLocation();
-  const navigate = useNavigate();
   const { user, loading } = useUser();
 
   if (loading) {
