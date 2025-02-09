@@ -1,36 +1,50 @@
-import { ModalForm, ProColumns, ProTable } from "@ant-design/pro-components";
-import { Button, DatePicker, Input } from "antd";
-import { useState } from "react";
+import { ProColumns, ProTable } from "@ant-design/pro-components";
+import { Button, DatePicker, Input, message } from "antd";
+import { FC, useState } from "react";
 import { FiEdit3, FiEye } from "react-icons/fi";
 import { IoMdAdd } from "react-icons/io";
 import { LuCircleMinus } from "react-icons/lu";
 import { TbReload } from "react-icons/tb";
 
-export type FormProp<T> = {
-  [K in keyof T]?: (value: T[K] | null) => JSX.Element;
+export type FormProps<T> = {
+  value?: T;
+  onFinish?: (value: Record<string, any>) => Promise<void>;
+  onCancel?: () => void;
+  open?: boolean;
 };
 type Props<T> = {
   data?: T[];
   loading?: boolean;
   columns?: ProColumns<T, "text">[];
-  formElements?: FormProp<T>;
+  form?: FC<FormProps<T>>;
   onReload?: () => void;
-  onEdit?: (value: T, newValue: any) => void;
-  onNew?: (value: any) => void;
   onDelete?: (value: T) => void;
+  onEdit?: (value: T, formValue: Record<string, any>) => Promise<void>;
+  onAdd?: (value: Record<string, any>) => Promise<void>;
 };
 export default function Table<T extends Record<string, any>>({
   data,
   loading,
   columns,
-  formElements,
-  onEdit,
+  form: FormFC,
   onDelete,
   onReload,
-  onNew,
+  onEdit,
+  onAdd,
 }: Props<T>) {
+  const [editForm, setEditForm] = useState<T | null>(null);
   const [newForm, setNewForm] = useState(false);
-  const [editForm, setEditForm] = useState<number | null>(null);
+  const runForm = async (promise: Promise<void>) => {
+    try {
+      await promise;
+      message.success("Амжилттай");
+      setEditForm(null);
+      setNewForm(false);
+      onReload?.();
+    } catch (error: any) {
+      message.error(error.message);
+    }
+  };
 
   return (
     <ProTable<T>
@@ -42,14 +56,27 @@ export default function Table<T extends Record<string, any>>({
           ...columns,
           {
             title: "Үйлдэл",
+            align: "center",
             render: (_, record) => (
-              <div className="flex gap-8">
+              <div className="flex gap-4">
                 <Button icon={<FiEye />} type="default" />
                 <Button
                   icon={<FiEdit3 />}
                   type="default"
-                  onClick={() => setEditForm(record.id)}
-                />
+                  style={{ aspectRatio: 1 }}
+                  onClick={() => setEditForm(record)}
+                >
+                  {FormFC && (
+                    <FormFC
+                      open={editForm === record}
+                      onFinish={async (value) =>
+                        onEdit && (await runForm(onEdit(record, value)))
+                      }
+                      onCancel={() => setEditForm(null)}
+                      value={record}
+                    />
+                  )}
+                </Button>
                 <Button
                   icon={<LuCircleMinus />}
                   onClick={() => onDelete?.(record)}
@@ -78,31 +105,15 @@ export default function Table<T extends Record<string, any>>({
           onClick={() => setNewForm(true)}
         >
           Нэмэх
+          {FormFC && (
+            <FormFC
+              open={newForm}
+              onFinish={async (value) => onAdd && (await runForm(onAdd(value)))}
+              onCancel={() => setNewForm(false)}
+            />
+          )}
         </Button>,
       ]}
-    >
-      {formElements && editForm !== null && (
-        <ModalForm
-          open
-          onOpenChange={(open) => setEditForm(open ? editForm : null)}
-          onFinish={async (value) => onEdit?.(data![editForm], value)}
-          title="Засах"
-        >
-          {Object.entries(formElements).map(([key, element]) =>
-            element(data![editForm][key])
-          )}
-        </ModalForm>
-      )}
-      {formElements && newForm && (
-        <ModalForm
-          open
-          onOpenChange={setNewForm}
-          title="Нэмэх"
-          onFinish={async (value) => onNew?.(value)}
-        >
-          {Object.values(formElements).map((element) => element())}
-        </ModalForm>
-      )}
-    </ProTable>
+    />
   );
 }

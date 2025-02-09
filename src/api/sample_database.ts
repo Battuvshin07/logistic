@@ -57,3 +57,6 @@ export const SAMPLE_ADMIN_TABLE = [
     registeredBy: RegisteredByColumn.Admin,
   },
 ];
+export const SAMPLE_ID_COUNTER = {
+  value: 3,
+};
