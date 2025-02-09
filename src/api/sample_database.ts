@@ -27,7 +27,7 @@ export const SAMPLE_ADMIN_TABLE = [
     isMale: true,
     phoneNumber: "12345678",
     email: "baatar.tsogt@mail.com",
-    registeredDate: "2023/03/13",
+    registeredDate: "2023-03-13",
     registeredBy: RegisteredByColumn.Admin,
   },
   {
@@ -40,7 +40,7 @@ export const SAMPLE_ADMIN_TABLE = [
     isMale: false,
     phoneNumber: "12345678",
     email: "saikhan.tsogt@mail.com",
-    registeredDate: "2023/03/13",
+    registeredDate: "2023-03-13",
     registeredBy: RegisteredByColumn.Admin,
   },
   {
@@ -53,7 +53,7 @@ export const SAMPLE_ADMIN_TABLE = [
     isMale: false,
     phoneNumber: "12345678",
     email: "amar@mail.com",
-    registeredDate: "2023/03/13",
+    registeredDate: "2023-03-13",
     registeredBy: RegisteredByColumn.Admin,
   },
 ];

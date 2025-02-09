@@ -4,7 +4,6 @@ import { ProColumnType } from "@ant-design/pro-components";
 import { useRequest } from "ahooks";
 import { Result, Tag } from "antd";
 import AdminForm from "./form";
-import { AdminResponseError, UserResponseError } from "@/api/errors";
 
 export const ROLE_TAG_PROPS: Record<string, { color: string; text: string }> = {
   [enums.RoleColumn.VehicleManager]: {
