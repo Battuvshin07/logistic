@@ -1,4 +1,5 @@
 import { ProColumns, ProTable } from "@ant-design/pro-components";
+import { useRequest } from "ahooks";
 import { Button, DatePicker, Input, message } from "antd";
 import { FC, useState } from "react";
 import { FiEdit3, FiEye } from "react-icons/fi";
@@ -13,36 +14,50 @@ export type FormProps<T> = {
   open?: boolean;
 };
 type Props<T> = {
-  data?: T[];
-  loading?: boolean;
   columns?: ProColumns<T, "text">[];
   form?: FC<FormProps<T>>;
-  onReload?: () => void;
-  onDelete?: (value: T) => void;
+  onData?: () => Promise<T[]>;
+  onDelete?: (value: T) => Promise<void>;
   onEdit?: (value: T, formValue: Record<string, any>) => Promise<void>;
   onAdd?: (value: Record<string, any>) => Promise<void>;
 };
 export default function Table<T extends Record<string, any>>({
-  data,
-  loading,
   columns,
   form: FormFC,
   onDelete,
-  onReload,
+  onData,
   onEdit,
   onAdd,
 }: Props<T>) {
   const [editForm, setEditForm] = useState<T | null>(null);
   const [newForm, setNewForm] = useState(false);
-  const runForm = async (promise: Promise<void>) => {
+  const {
+    loading,
+    run: requestData,
+    data,
+  } = useRequest(async () => onData && (await onData()), {
+    refreshDeps: [onData],
+  });
+  const { loading: deleting, run: runDelete } = useRequest(
+    async (value: T) => onDelete && (await onDelete(value)),
+    {
+      manual: true,
+      refreshDeps: [onDelete],
+    }
+  );
+  const runForm = async (
+    formPromise: Promise<void>,
+    successMessage: string
+  ) => {
     try {
-      await promise;
-      message.success("Амжилттай");
-      setEditForm(null);
+      await formPromise;
+      message.success(successMessage);
+      requestData();
       setNewForm(false);
-      onReload?.();
-    } catch (error: any) {
-      message.error(error.message);
+      setEditForm(null);
+    } catch (e) {
+      console.error(e);
+      message.error("Алдаа гарлаа");
     }
   };
 
@@ -70,7 +85,11 @@ export default function Table<T extends Record<string, any>>({
                     <FormFC
                       open={editForm === record}
                       onFinish={async (value) =>
-                        onEdit && (await runForm(onEdit(record, value)))
+                        onEdit &&
+                        (await runForm(
+                          onEdit(record, value),
+                          "Амжилттай өөрчиллөө"
+                        ))
                       }
                       onCancel={() => setEditForm(null)}
                       value={record}
@@ -79,8 +98,10 @@ export default function Table<T extends Record<string, any>>({
                 </Button>
                 <Button
                   icon={<LuCircleMinus />}
-                  onClick={() => onDelete?.(record)}
+                  onClick={() => runDelete(record)}
+                  loading={deleting}
                   type="default"
+                  className="aspect-square"
                   danger
                 />
               </div>
@@ -98,7 +119,13 @@ export default function Table<T extends Record<string, any>>({
       }
       toolBarRender={() => [
         <Input.Search placeholder="Хайх" />,
-        <Button icon={<TbReload />} type="default" onClick={onReload}></Button>,
+        <Button
+          icon={<TbReload />}
+          onClick={requestData}
+          loading={loading}
+          className="aspect-square"
+          type="default"
+        />,
         <Button
           icon={<IoMdAdd />}
           type="primary"
@@ -108,7 +135,9 @@ export default function Table<T extends Record<string, any>>({
           {FormFC && (
             <FormFC
               open={newForm}
-              onFinish={async (value) => onAdd && (await runForm(onAdd(value)))}
+              onFinish={async (value) =>
+                onAdd && (await runForm(onAdd(value), "Амжилттай нэмлээ"))
+              }
               onCancel={() => setNewForm(false)}
             />
           )}

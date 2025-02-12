@@ -1,8 +1,7 @@
 import { admin, enums } from "@/api";
 import Table from "@/components/table";
 import { ProColumnType } from "@ant-design/pro-components";
-import { useRequest } from "ahooks";
-import { Result, Tag } from "antd";
+import { Tag } from "antd";
 import AdminForm from "./form";
 
 export const ROLE_TAG_PROPS: Record<string, { color: string; text: string }> = {
@@ -87,21 +86,15 @@ const COLUMNS: ProColumnType<any>[] = [
 ];
 
 export default function AdminPage() {
-  const { data, loading, refresh, error } = useRequest(admin.tables);
-
-  if (error) {
-    return <Result title={error.message} />;
-  }
-
   return (
     <Table
-      data={data}
       columns={COLUMNS}
-      loading={loading}
-      onReload={refresh}
-      onEdit={(value, newValue) => admin.editRow({ ...value, ...newValue })}
+      onData={admin.tables}
+      onEdit={async (value, newValue) =>
+        await admin.editRow({ ...value, ...newValue })
+      }
       onAdd={admin.addRow as any}
       form={AdminForm}
-    ></Table>
+    />
   );
 }
