@@ -113,7 +113,7 @@ export default function Table<T extends Record<string, any>>({
       options={false}
       headerTitle={
         <div className="flex gap-8 items-center">
-          <p>Нийт: ({data?.length})</p>
+          <p>Нийт ({data?.length})</p>
           <DatePicker.RangePicker />
         </div>
       }
@@ -129,6 +129,7 @@ export default function Table<T extends Record<string, any>>({
         <Button
           icon={<IoMdAdd />}
           type="primary"
+          loading={loading}
           onClick={() => setNewForm(true)}
         >
           Нэмэх
