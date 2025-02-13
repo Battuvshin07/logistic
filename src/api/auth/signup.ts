@@ -16,10 +16,8 @@ async function signup(value: Signup) {
     }
     const token = `generatedToken-${value.email}`;
     SAMPLE_USERS.push({ ...value, role: "finance", token });
-    localStorage.setItem("token", token);
-    return;
+    return token;
   }
-  const token = await http.post<string>("/auth/signup", value);
-  localStorage.setItem("token", token);
+  return await http.post<string>("/auth/signup", value);
 }
 export default signup;

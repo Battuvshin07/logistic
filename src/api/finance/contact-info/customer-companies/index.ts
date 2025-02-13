@@ -1,10 +1,9 @@
-import { http, user } from "@/api";
+import { http } from "@/api";
 import { Schema } from "./type";
 
 export type { Schema };
 
-export async function get() {
-  const { token } = await user.info();
+export async function get(token: string) {
   if (import.meta.env.VITE_NO_BACKEND) {
     const { SAMPLE_CONTACT_INFO_CUSTOMER_COMPANY_TABLE } = await import(
       "@/api/sample_database"
@@ -18,8 +17,7 @@ export async function get() {
     token
   );
 }
-export async function del(id: number) {
-  const { token } = await user.info();
+export async function del(token: string, id: number) {
   if (import.meta.env.VITE_NO_BACKEND) {
     const { SAMPLE_CONTACT_INFO_CUSTOMER_COMPANY_TABLE: TABLE } = await import(
       "@/api/sample_database"
@@ -34,8 +32,7 @@ export async function del(id: number) {
     token
   );
 }
-export async function post(value: Omit<Schema, "id">) {
-  const { token } = await user.info();
+export async function post(token: string, value: Omit<Schema, "id">) {
   if (import.meta.env.VITE_NO_BACKEND) {
     const { SAMPLE_CONTACT_INFO_CUSTOMER_COMPANY_TABLE: TABLE, nextId } =
       await import("@/api/sample_database");
@@ -48,8 +45,7 @@ export async function post(value: Omit<Schema, "id">) {
     token
   );
 }
-export async function put(value: Schema) {
-  const { token } = await user.info();
+export async function put(token: string, value: Schema) {
   if (import.meta.env.VITE_NO_BACKEND) {
     const { SAMPLE_CONTACT_INFO_CUSTOMER_COMPANY_TABLE: TABLE } = await import(
       "@/api/sample_database"

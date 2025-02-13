@@ -14,12 +14,10 @@ async function login(value: Login) {
       if (sample.password !== value.password) {
         throw new Error(LoginResponseError.NotFound);
       }
-      localStorage.setItem("token", sample.token);
-      return;
+      return sample.token;
     }
     throw new Error(LoginResponseError.NotFound);
   }
-  const token = await http.post<string>("/auth/login", value);
-  localStorage.setItem("token", token);
+  return await http.post<string>("/auth/login", value);
 }
 export default login;

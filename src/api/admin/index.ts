@@ -3,8 +3,8 @@ import { AdminResponseError } from "../errors";
 import { AdminTableResponse, AdminTableSchema } from "./type";
 
 export type * from "./type";
-export async function get() {
-  const userInfo = await user.info();
+export async function get(token: string) {
+  const userInfo = await user.info(token);
   if (import.meta.env.VITE_NO_BACKEND) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     if (userInfo.role !== "admin") {
@@ -17,8 +17,8 @@ export async function get() {
 
   return await http.get<AdminTableResponse>("/admin/table", userInfo.token);
 }
-export async function post(value: Omit<AdminTableSchema, "id">) {
-  const userInfo = await user.info();
+export async function post(token: string, value: Omit<AdminTableSchema, "id">) {
+  const userInfo = await user.info(token);
   if (import.meta.env.VITE_NO_BACKEND) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     if (userInfo.role !== "admin") {
@@ -31,8 +31,8 @@ export async function post(value: Omit<AdminTableSchema, "id">) {
   }
   return await http.post<undefined>("/admin/table", value, userInfo.token);
 }
-export async function put(value: AdminTableSchema) {
-  const userInfo = await user.info();
+export async function put(token: string, value: AdminTableSchema) {
+  const userInfo = await user.info(token);
   if (import.meta.env.VITE_NO_BACKEND) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     if (userInfo.role !== "admin") {
@@ -47,8 +47,8 @@ export async function put(value: AdminTableSchema) {
   }
   return await http.put<undefined>("/admin/table", value, userInfo.token);
 }
-export async function del(id: number) {
-  const userInfo = await user.info();
+export async function del(token: string, id: number) {
+  const userInfo = await user.info(token);
   if (import.meta.env.VITE_NO_BACKEND) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     if (userInfo.role !== "admin") {

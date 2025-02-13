@@ -4,12 +4,14 @@ import { auth } from "@/api";
 import { useRequest } from "ahooks";
 import { useNavigate } from "react-router";
 import { SignupResponseError } from "@/api/errors";
+import { useUser } from "@/providers/user";
 
 export default function SignupPage() {
+  const { setToken } = useUser();
   const navigate = useNavigate();
   const { runAsync, loading } = useRequest(
     async (value) => {
-      await auth.signup(value);
+      setToken(await auth.signup(value));
       navigate("/dashboard");
     },
     {

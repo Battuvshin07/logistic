@@ -4,12 +4,14 @@ import { ProForm, ProFormGroup, ProFormText } from "@ant-design/pro-components";
 import { Button, message } from "antd";
 import { useNavigate } from "react-router";
 import { LoginResponseError } from "@/api/errors";
+import { useUser } from "@/providers/user";
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { setToken } = useUser();
   const { runAsync, loading } = useRequest(
     async (value) => {
-      await auth.login(value);
+      setToken(await auth.login(value));
       navigate("/dashboard");
     },
     {

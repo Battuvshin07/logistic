@@ -2,6 +2,9 @@ import { finance } from "@/api";
 import Table from "@/components/table";
 import { Switch } from "antd";
 import CustomerCompanyForm from "./customer-company-form";
+import { useUser } from "@/providers/user";
+import { PageLoading } from "@ant-design/pro-components";
+import Title from "antd/es/typography/Title";
 
 const COLUMNS = [
   {
@@ -35,16 +38,21 @@ const COLUMNS = [
 ];
 
 export default function CustomerCompanyTable() {
+  const { loading, user } = useUser();
+
+  if (loading) return <PageLoading />;
+  if (!user) return <Title>Нэвтрэх боломжгүй</Title>;
+
   const customerCompanies = finance.contactInfo.customerCompanies;
 
   return (
     <Table
       columns={COLUMNS}
-      onData={customerCompanies.get}
-      onDelete={({ id }) => customerCompanies.del(id)}
-      onAdd={customerCompanies.post as any}
+      onData={() => customerCompanies.get(user.token)}
+      onDelete={({ id }) => customerCompanies.del(user.token, id)}
+      onAdd={(value) => customerCompanies.post(user.token, value as any)}
       onEdit={(value, formValue) =>
-        customerCompanies.put({ ...value, ...formValue })
+        customerCompanies.put(user.token, { ...value, ...formValue })
       }
       form={CustomerCompanyForm}
     />

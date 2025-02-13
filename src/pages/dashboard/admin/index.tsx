@@ -1,8 +1,10 @@
 import { admin, enums } from "@/api";
 import Table from "@/components/table";
-import { ProColumnType } from "@ant-design/pro-components";
+import { PageLoading, ProColumnType } from "@ant-design/pro-components";
 import { Tag } from "antd";
 import AdminForm from "./form";
+import { useUser } from "@/providers/user";
+import Title from "antd/es/typography/Title";
 
 export const ROLE_TAG_PROPS: Record<string, { color: string; text: string }> = {
   [enums.RoleColumn.VehicleManager]: {
@@ -86,15 +88,20 @@ const COLUMNS: ProColumnType<any>[] = [
 ];
 
 export default function AdminPage() {
+  const { loading, user } = useUser();
+
+  if (loading) return <PageLoading />;
+  if (!user) return <Title>Нэвтрэх боломжгүй</Title>;
+
   return (
     <Table
       columns={COLUMNS}
-      onData={admin.get}
-      onEdit={async (value, newValue) =>
-        await admin.put({ ...value, ...newValue })
+      onData={() => admin.get(user.token)}
+      onEdit={(value, newValue) =>
+        admin.put(user.token, { ...value, ...newValue })
       }
-      onAdd={admin.post as any}
-      onDelete={({ id }) => admin.del(id)}
+      onAdd={(value) => admin.post(user.token, value as any)}
+      onDelete={({ id }) => admin.del(user.token, id)}
       form={AdminForm}
     />
   );
