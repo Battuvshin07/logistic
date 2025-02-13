@@ -9,9 +9,9 @@ import { TbReload } from "react-icons/tb";
 
 export type FormProps<T> = {
   value?: T;
+  open?: boolean;
   onFinish?: (value: Record<string, any>) => Promise<void>;
   onCancel?: () => void;
-  open?: boolean;
 };
 type Props<T> = {
   columns?: ProColumns<T, "text">[];
@@ -74,7 +74,7 @@ export default function Table<T extends Record<string, any>>({
             align: "center",
             fixed: "right",
             render: (_, record) => (
-              <div className="flex gap-4">
+              <div className="flex gap-4 justify-center">
                 <Button icon={<FiEye />} type="default" />
                 <Button
                   icon={<FiEdit3 />}
@@ -82,9 +82,9 @@ export default function Table<T extends Record<string, any>>({
                   style={{ aspectRatio: 1 }}
                   onClick={() => setEditForm(record)}
                 >
-                  {FormFC && editForm === record && (
+                  {FormFC && (
                     <FormFC
-                      open
+                      open={editForm === record}
                       onFinish={async (value) =>
                         onEdit &&
                         (await runForm(
@@ -134,9 +134,9 @@ export default function Table<T extends Record<string, any>>({
           onClick={() => setNewForm(true)}
         >
           Нэмэх
-          {FormFC && newForm && (
+          {FormFC && (
             <FormFC
-              open
+              open={newForm}
               onFinish={async (value) =>
                 onAdd && (await runForm(onAdd(value), "Амжилттай нэмлээ"))
               }

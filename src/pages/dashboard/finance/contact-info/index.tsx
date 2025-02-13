@@ -1,5 +1,5 @@
 import CustomerCompanyTable from "./customer-company";
-import Tabs from "@/components/table/tabs";
+import Tabs from "@/components/tabs";
 
 const TAB_ITEMS = [
   {

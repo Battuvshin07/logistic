@@ -3,7 +3,7 @@ import { AdminResponseError } from "../errors";
 import { AdminTableResponse, AdminTableSchema } from "./type";
 
 export type * from "./type";
-export async function tables() {
+export async function get() {
   const userInfo = await user.info();
   if (import.meta.env.VITE_NO_BACKEND) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -17,7 +17,7 @@ export async function tables() {
 
   return await http.get<AdminTableResponse>("/admin/table", userInfo.token);
 }
-export async function addRow(value: Omit<AdminTableSchema, "id">) {
+export async function post(value: Omit<AdminTableSchema, "id">) {
   const userInfo = await user.info();
   if (import.meta.env.VITE_NO_BACKEND) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -25,16 +25,13 @@ export async function addRow(value: Omit<AdminTableSchema, "id">) {
       throw new Error(AdminResponseError.UserNotAdmin);
     }
 
-    const { SAMPLE_ADMIN_TABLE, SAMPLE_ID_COUNTER } = await import(
-      "../sample_database"
-    );
-    SAMPLE_ID_COUNTER.value++;
-    SAMPLE_ADMIN_TABLE.push({ ...value, id: SAMPLE_ID_COUNTER.value });
+    const { SAMPLE_ADMIN_TABLE, nextId } = await import("../sample_database");
+    SAMPLE_ADMIN_TABLE.push({ ...value, id: nextId() });
     return;
   }
   return await http.post<undefined>("/admin/table", value, userInfo.token);
 }
-export async function editRow(value: AdminTableSchema) {
+export async function put(value: AdminTableSchema) {
   const userInfo = await user.info();
   if (import.meta.env.VITE_NO_BACKEND) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -44,8 +41,25 @@ export async function editRow(value: AdminTableSchema) {
 
     const { SAMPLE_ADMIN_TABLE } = await import("../sample_database");
     const index = SAMPLE_ADMIN_TABLE.findIndex((s) => s.id === value.id);
+    if (index < 0) return;
     SAMPLE_ADMIN_TABLE[index] = value;
     return;
   }
   return await http.put<undefined>("/admin/table", value, userInfo.token);
+}
+export async function del(id: number) {
+  const userInfo = await user.info();
+  if (import.meta.env.VITE_NO_BACKEND) {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    if (userInfo.role !== "admin") {
+      throw new Error(AdminResponseError.UserNotAdmin);
+    }
+
+    const { SAMPLE_ADMIN_TABLE } = await import("../sample_database");
+    const index = SAMPLE_ADMIN_TABLE.findIndex((s) => s.id === id);
+    if (index < 0) return;
+    SAMPLE_ADMIN_TABLE.splice(index, 1);
+    return;
+  }
+  return await http.del<undefined>(`/admin/table/${id}`, userInfo.token);
 }

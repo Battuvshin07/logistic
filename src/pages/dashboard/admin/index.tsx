@@ -89,11 +89,12 @@ export default function AdminPage() {
   return (
     <Table
       columns={COLUMNS}
-      onData={admin.tables}
+      onData={admin.get}
       onEdit={async (value, newValue) =>
-        await admin.editRow({ ...value, ...newValue })
+        await admin.put({ ...value, ...newValue })
       }
-      onAdd={admin.addRow as any}
+      onAdd={admin.post as any}
+      onDelete={({ id }) => admin.del(id)}
       form={AdminForm}
     />
   );

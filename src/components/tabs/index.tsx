@@ -14,16 +14,14 @@ export default function Tabs({ tabs, defaultTab = 0 }: Props) {
   const [value, setValue] = useState(tabs[defaultTab].value);
   return (
     <div className="flex flex-col gap-4">
-      <Radio.Group
-        block
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      >
+      <Radio.Group value={value} onChange={(e) => setValue(e.target.value)}>
         {tabs.map(({ value, label }) => (
-          <Radio.Button value={value}>{label}</Radio.Button>
+          <Radio.Button key={value} value={value}>
+            {label}
+          </Radio.Button>
         ))}
       </Radio.Group>
-      {tabs.find(({ value }) => value === value)?.children}
+      {tabs.find((tab) => tab.value === value)?.children}
     </div>
   );
 }

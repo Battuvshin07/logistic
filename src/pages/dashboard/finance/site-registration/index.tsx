@@ -1,5 +1,5 @@
 import Table from "@/components/table";
-import Tabs from "@/components/table/tabs";
+import Tabs from "@/components/tabs";
 
 const CAPACITY_COLUMNS = [
   {

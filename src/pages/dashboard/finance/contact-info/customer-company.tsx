@@ -1,5 +1,7 @@
+import { finance } from "@/api";
 import Table from "@/components/table";
 import { Switch } from "antd";
+import CustomerCompanyForm from "./customer-company-form";
 
 const COLUMNS = [
   {
@@ -33,5 +35,18 @@ const COLUMNS = [
 ];
 
 export default function CustomerCompanyTable() {
-  return <Table columns={COLUMNS} />;
+  const customerCompanies = finance.contactInfo.customerCompanies;
+
+  return (
+    <Table
+      columns={COLUMNS}
+      onData={customerCompanies.get}
+      onDelete={({ id }) => customerCompanies.del(id)}
+      onAdd={customerCompanies.post as any}
+      onEdit={(value, formValue) =>
+        customerCompanies.put({ ...value, ...formValue })
+      }
+      form={CustomerCompanyForm}
+    />
+  );
 }
