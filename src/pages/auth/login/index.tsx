@@ -43,15 +43,13 @@ export default function LoginPage() {
           },
         }}
       >
-        <ProFormGroup title="Нэвтрэх">
+        <ProFormGroup title="Нэвтрэх" direction="vertical">
           <ProFormText
             rules={[{ required: true }, { type: "email" }]}
-            width="md"
             name="email"
             label={"И-мэйл"}
           />
           <ProFormText.Password
-            width="md"
             name="password"
             label={"Нууц үг"}
             rules={[

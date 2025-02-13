@@ -72,6 +72,7 @@ export default function Table<T extends Record<string, any>>({
           {
             title: "Үйлдэл",
             align: "center",
+            fixed: "right",
             render: (_, record) => (
               <div className="flex gap-4">
                 <Button icon={<FiEye />} type="default" />
@@ -81,9 +82,9 @@ export default function Table<T extends Record<string, any>>({
                   style={{ aspectRatio: 1 }}
                   onClick={() => setEditForm(record)}
                 >
-                  {FormFC && (
+                  {FormFC && editForm === record && (
                     <FormFC
-                      open={editForm === record}
+                      open
                       onFinish={async (value) =>
                         onEdit &&
                         (await runForm(
@@ -133,9 +134,9 @@ export default function Table<T extends Record<string, any>>({
           onClick={() => setNewForm(true)}
         >
           Нэмэх
-          {FormFC && (
+          {FormFC && newForm && (
             <FormFC
-              open={newForm}
+              open
               onFinish={async (value) =>
                 onAdd && (await runForm(onAdd(value), "Амжилттай нэмлээ"))
               }

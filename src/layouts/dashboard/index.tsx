@@ -1,6 +1,6 @@
 import { useUser } from "@/providers/user";
 import { PageLoading, ProLayout } from "@ant-design/pro-components";
-import { Navigate, Outlet, useLocation } from "react-router";
+import { Navigate, Outlet, useLocation, useNavigate } from "react-router";
 
 const ADMIN_ROUTES = [
   {
@@ -27,8 +27,9 @@ const ROUTES = {
   finance: FINANCE_ROUTES,
 };
 export default function DashboardLayout() {
-  const location = useLocation();
   const { user, loading } = useUser();
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
 
   if (loading) {
     return <PageLoading />;
@@ -44,7 +45,6 @@ export default function DashboardLayout() {
       style={{ borderRadius: "100px" }}
       fixSiderbar={true}
       siderWidth={300}
-      location={{ pathname: location.pathname }}
       token={{
         header: {
           colorBgHeader: "#0077F4",
@@ -55,12 +55,16 @@ export default function DashboardLayout() {
           colorHeaderTitle: "#eef",
         },
       }}
+      location={{ pathname }}
       fixedHeader
       layout="top"
       menu={{
         type: "sub",
         request: async () => route,
       }}
+      menuItemRender={(item, dom) => (
+        <a onClick={() => navigate(item.path!)}>{dom}</a>
+      )}
     >
       <Outlet />
     </ProLayout>

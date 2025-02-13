@@ -8,8 +8,9 @@ const AdminPage = lazy(() => import("@/pages/dashboard/admin"));
 const SiteRegistrationPage = lazy(
   () => import("@/pages/dashboard/finance/site-registration")
 );
-// const ContactInfoPage = lazy(() => import("@/pages/dashboard/finance/contact-info"));
-// const ReportPage = lazy(() => import("@/pages/dashboard/finance/report"));
+const ContactInfoPage = lazy(
+  () => import("@/pages/dashboard/finance/contact-info")
+);
 
 export default function createDashboardRoutes(
   user: User | null,
@@ -26,24 +27,11 @@ export default function createDashboardRoutes(
       break;
   }
   return (
-    <Route
-      path="dashboard"
-      element={user ? <DashboardLayout /> : <Navigate to="/auth/signup" />}
-    >
-      {user && (
-        <>
-          <Route index element={<Navigate to={navigation} />} />
-          {user.role === "admin" && (
-            <Route path="admin" element={<AdminPage />} />
-          )}
-          {user.role === "finance" && (
-            <Route
-              path="site-registration"
-              element={<SiteRegistrationPage />}
-            />
-          )}
-        </>
-      )}
+    <Route path="dashboard" element={<DashboardLayout />}>
+      <Route index element={<Navigate to={navigation} />} />
+      <Route path="admin" element={<AdminPage />} />
+      <Route path="site-registration" element={<SiteRegistrationPage />} />
+      <Route path="contact-info" element={<ContactInfoPage />} />
     </Route>
   );
 }

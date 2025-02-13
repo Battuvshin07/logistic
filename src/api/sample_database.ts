@@ -58,5 +58,10 @@ export const SAMPLE_ADMIN_TABLE = [
   },
 ];
 export const SAMPLE_ID_COUNTER = {
-  value: 3,
+  value: 5,
 };
+export const SAMPLE_SITE_REG_CAPACITY_TABLE = [
+  {
+    id: 4,
+  },
+];
