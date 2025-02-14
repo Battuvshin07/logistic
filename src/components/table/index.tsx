@@ -129,7 +129,7 @@ export default function Table<T extends Record<string, any>>({
         />,
         <Button
           icon={<IoMdAdd />}
-          type="primary"
+          type="default"
           loading={loading}
           onClick={() => setNewForm(true)}
         >

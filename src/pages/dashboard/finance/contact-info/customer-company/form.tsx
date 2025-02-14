@@ -1,7 +1,7 @@
 import { FormProps } from "@/components/table";
 import {
   ModalForm,
-  ProFormGroup,
+  ProForm,
   ProFormRadio,
   ProFormText,
 } from "@ant-design/pro-components";
@@ -17,8 +17,13 @@ export default function CustomerCompanyForm({
       onFinish={onFinish}
       onOpenChange={(open) => !open && onCancel?.()}
       open={open}
+      modalProps={{
+        style: {
+          maxWidth: "max-content",
+        },
+      }}
     >
-      <ProFormGroup direction="horizontal">
+      <ProForm.Group direction="horizontal">
         <ProFormText
           label="Товчлол"
           name="abbreviation"
@@ -31,7 +36,7 @@ export default function CustomerCompanyForm({
           initialValue={value?.companyName}
           required
         />
-      </ProFormGroup>
+      </ProForm.Group>
       <ProFormRadio.Group
         label="Зууч эсэх?"
         name="isBroker"
@@ -41,7 +46,7 @@ export default function CustomerCompanyForm({
         ]}
         initialValue={value?.isBroker}
       />
-      <ProFormGroup direction="horizontal">
+      <ProForm.Group direction="horizontal">
         <ProFormText
           label="Данс"
           name="account"
@@ -54,7 +59,7 @@ export default function CustomerCompanyForm({
           initialValue={value?.contactNumber}
           required
         />
-      </ProFormGroup>
+      </ProForm.Group>
     </ModalForm>
   );
 }

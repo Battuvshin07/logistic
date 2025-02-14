@@ -56,6 +56,11 @@ export default function AdminForm({
       onFinish={onFinish}
       onOpenChange={(open) => !open && onCancel?.()}
       open={open}
+      modalProps={{
+        style: {
+          maxWidth: "max-content",
+        },
+      }}
     >
       {formText("email", "И-мэйл", value?.email, [{ type: "email" }])}
       {formSelect(

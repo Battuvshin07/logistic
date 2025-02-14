@@ -1,7 +1,7 @@
 import { finance } from "@/api";
 import Table from "@/components/table";
 import { Switch } from "antd";
-import CustomerCompanyForm from "./customer-company-form";
+import CustomerCompanyForm from "./form";
 import { useUser } from "@/providers/user";
 import { PageLoading } from "@ant-design/pro-components";
 import Title from "antd/es/typography/Title";

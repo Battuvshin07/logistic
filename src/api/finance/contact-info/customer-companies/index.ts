@@ -1,4 +1,4 @@
-import { http } from "@/api";
+import { http, user } from "@/api";
 import { Schema } from "./type";
 
 export type { Schema };
