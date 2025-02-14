@@ -18,9 +18,7 @@ export default function CustomerCompanyForm({
       onOpenChange={(open) => !open && onCancel?.()}
       open={open}
       modalProps={{
-        style: {
-          maxWidth: "max-content",
-        },
+        style: { maxWidth: "max-content" },
       }}
     >
       <ProForm.Group direction="horizontal">
