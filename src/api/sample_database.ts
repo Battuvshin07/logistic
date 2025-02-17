@@ -4,7 +4,7 @@ export const SAMPLE_USERS = [
   {
     email: "admin@mail.com",
     password: "admin123",
-    fullName: "Admin Molor",
+    fullName: "Admin Battuvshin",
     role: "admin",
     token: "admin-token",
   },
